@@ -1,4 +1,5 @@
-﻿using Apache.Ignite.Core;
+﻿using System.Threading;
+using Apache.Ignite.Core;
 
 namespace Apache.Ignite.Docker
 {
@@ -7,6 +8,7 @@ namespace Apache.Ignite.Docker
         static void Main()
         {
             Ignition.Start();
+            Thread.Sleep(Timeout.Infinite);
         }
     }
 }
