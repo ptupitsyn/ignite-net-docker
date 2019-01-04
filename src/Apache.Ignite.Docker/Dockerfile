@@ -9,10 +9,9 @@ RUN dotnet restore
 COPY . ./
 RUN dotnet publish -c Release -o out
 
-# TODO: Copy JARs
-
 # Build runtime image
-FROM microsoft/dotnet:aspnetcore-runtime
+FROM microsoft/dotnet:runtime
 WORKDIR /app
 COPY --from=build-env /app/out .
+COPY --from=build-env /root/.nuget/packages/apache.ignite/2.7.0/libs .
 ENTRYPOINT ["dotnet", "Apache.Ignite.Docker.dll"]
