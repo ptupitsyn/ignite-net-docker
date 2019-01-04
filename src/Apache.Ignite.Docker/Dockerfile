@@ -16,5 +16,5 @@ RUN apt update && apt install apt-utils -y --no-install-recommends
 RUN apt update && apt install default-jre -y --no-install-recommends
 WORKDIR /app
 COPY --from=build-env /app/out .
-COPY --from=build-env /root/.nuget/packages/apache.ignite/2.7.0/libs .
+COPY --from=build-env /root/.nuget/packages/apache.ignite/2.7.0/libs ./libs
 ENTRYPOINT ["dotnet", "Apache.Ignite.Docker.dll"]
