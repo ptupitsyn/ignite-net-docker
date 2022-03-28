@@ -22,7 +22,6 @@ RUN apt update && apt install default-jre -y --no-install-recommends
 ## Copy binaries
 WORKDIR /app
 COPY --from=build-env /app/out .
-COPY --from=build-env /root/.nuget/packages/gridgain.ignite/8.8.17/libs ./libs
 
 ## Run
 ENTRYPOINT ["dotnet", "Apache.Ignite.Docker.dll"]
