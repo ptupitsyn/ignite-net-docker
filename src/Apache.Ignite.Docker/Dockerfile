@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:3.1-alpine AS build-env
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
@@ -10,14 +10,16 @@ COPY . ./
 RUN dotnet publish -c Release -o out
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/runtime:3.1
+FROM mcr.microsoft.com/dotnet/runtime:3.1-alpine
 
-## Workaround for apt/jre issues
-RUN mkdir -p /usr/share/man/man1
-RUN apt update && apt install apt-utils -y --no-install-recommends
+RUN apk --no-cache add openjdk8 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
 
-## Install JRE
-RUN apt update && apt install default-jre -y --no-install-recommends
+# ## Workaround for apt/jre issues
+# RUN mkdir -p /usr/share/man/man1
+# RUN apt update && apt install apt-utils -y --no-install-recommends
+#
+# ## Install JRE
+# RUN apt update && apt install default-jre -y --no-install-recommends
 
 ## Copy binaries
 WORKDIR /app
