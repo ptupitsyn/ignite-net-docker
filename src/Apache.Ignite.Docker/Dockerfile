@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:sdk AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build-env
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
@@ -10,7 +10,7 @@ COPY . ./
 RUN dotnet publish -c Release -o out
 
 # Build runtime image
-FROM microsoft/dotnet:runtime
+FROM mcr.microsoft.com/dotnet/runtime:3.1
 
 ## Workaround for apt/jre issues
 RUN mkdir -p /usr/share/man/man1
@@ -22,7 +22,6 @@ RUN apt update && apt install default-jre -y --no-install-recommends
 ## Copy binaries
 WORKDIR /app
 COPY --from=build-env /app/out .
-COPY --from=build-env /root/.nuget/packages/apache.ignite/2.7.0/libs ./libs
 
 ## Run
 ENTRYPOINT ["dotnet", "Apache.Ignite.Docker.dll"]
